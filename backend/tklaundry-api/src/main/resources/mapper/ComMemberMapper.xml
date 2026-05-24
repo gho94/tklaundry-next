@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tklaundry.api.member.ComMemberMapper">
+
+	<resultMap id="comMemberMap" type="com.tklaundry.api.member.ComMember">
+		<result property="userId" column="UserID"/>
+		<result property="userPw" column="UserPW"/>
+		<result property="userName" column="UserName"/>
+		<result property="loginDate" column="LogInDate"/>
+		<result property="useYn" column="UseYn"/>
+	</resultMap>
+
+	<select id="getTblComMember" resultMap="comMemberMap">
+		SELECT UserID, UserPW, UserName, LogInDate, UseYn
+		FROM ComMember
+		WHERE UserID = #{userId}
+		  AND UserPW = #{userPw}
+		  AND UseYn = 'Y'
+	</select>
+
+	<update id="updateTblComMember">
+		UPDATE ComMember
+		SET LogInDate = #{loginDate}
+		WHERE UserID = #{userId}
+	</update>
+
+</mapper>
