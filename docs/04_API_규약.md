@@ -49,10 +49,26 @@
 
 ## 4. 엔드포인트(최소 스캐폴딩)
 
-### 4.1 Health
+### 4.1 로그인
 
-- `GET /api/health`
-  - 200: `"ok"` (text/plain 또는 JSON 중 택1. 현재는 text `ok`)
+- `POST /api/auth/login`
+- Request JSON:
+
+```json
+{ "userId": "문자열", "password": "문자열" }
+```
+
+- 200 응답:
+
+```json
+{ "userId": "...", "userName": "..." }
+```
+
+- 실패: `401`, 표준 오류 본문(`code`: `UNAUTHORIZED`).
+
+### 4.2 Health(선택)
+
+- `GET /api/health` — 필요 시 별도 추가
 
 ---
 

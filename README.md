@@ -3,8 +3,8 @@
 이 저장소는 **기존 `TKLaundry`(C#, DevExpress) → 차세대(Java API + Flutter Windows)**로 옮기는 “**병행 운영 기반 전환**”을 다룬다.  
 모바일/고객앱/클라우드 전환은 **별도 기획/저장소**로 분리한다(이 저장소 범위 밖).
 
-- **클라이언트**: Flutter **Windows 데스크톱**(관리자)
-- **백엔드**: Java API(Spring Boot)
+- **클라이언트**: Flutter **Windows 데스크톱**(관리자) — [`app/tklaundry_app/`](app/tklaundry_app/)
+- **백엔드**: Java API(Spring Boot) — [`backend/tklaundry-api/`](backend/tklaundry-api/)
 - **DB**: 기존 MSSQL **동일 DB 공유**(병행)
 
 ## 폴더 구조
@@ -12,14 +12,14 @@
 | 경로 | 설명 |
 |------|------|
 | [`docs/`](docs/) | 기획/설계/프로세스 |
-| [`backend/`](backend/) | Java API |
-| [`app/`](app/) | Flutter Windows(관리자) |
+| [`backend/tklaundry-api/`](backend/tklaundry-api/) | Java API |
+| [`app/tklaundry_app/`](app/tklaundry_app/) | Flutter Windows(관리자) |
 
 ## 문서 읽는 순서
 
 1. [00_레거시_분석.md](docs/00_레거시_분석.md) — **기존 C# 시스템 분석**(화면·흐름·규칙·DB) ← 차세대 구현 전 필독
 2. [01_상세_기획서_PRD.md](docs/01_상세_기획서_PRD.md) — 범위/성공기준/요구사항(PRD)
-3. [02_테스크_목록.md](docs/02_테스크_목록.md) — 백로그/마일스톤/Done 정의
+3. [02_테스크_목록.md](docs/02_테스크_목록.md) — 백로그/마일스톤·Done 정의
 4. [03_아키텍처.md](docs/03_아키텍처.md) — 아키텍처/규칙/환경(로컬·매장)
 5. [04_API_규약.md](docs/04_API_규약.md) — API 규약 + 핵심 엔드포인트
 6. [05_DB_병행_및_마이그레이션.md](docs/05_DB_병행_및_마이그레이션.md) — DB 병행 전략 + 쓰기 담당/대조
