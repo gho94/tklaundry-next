@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tklaundry.api.common.mapper.ComBaseDataMapper">
+
+	<resultMap id="comBaseDataMap" type="com.tklaundry.api.common.model.ComBaseData">
+		<result property="codeId" column="CodeID"/>
+		<result property="codeName" column="CodeName"/>
+		<result property="pCodeId" column="PCodeID"/>
+		<result property="grade" column="GRADE"/>
+	</resultMap>
+
+	<select id="selectCodeListCte" resultMap="comBaseDataMap">
+		WITH TempCte (CodeID, CodeName, PCodeID, GRADE) AS (
+			SELECT CodeID, CodeName, PCodeID, 0 AS GRADE
+			FROM ComBaseData
+			WHERE PCodeID = 'ROOT'
+			UNION ALL
+			SELECT AAA.CodeID, AAA.CodeName, AAA.PCodeID, BBB.GRADE + 1
+			FROM ComBaseData AS AAA
+			INNER JOIN TempCte AS BBB ON AAA.PCodeID = BBB.CodeID
+		)
+		SELECT CodeID, CodeName, PCodeID, GRADE
+		FROM TempCte
+		ORDER BY CodeID
+	</select>
+
+	<select id="countByCodeId" resultType="int">
+		SELECT COUNT(1)
+		FROM ComBaseData
+		WHERE CodeID = #{codeId}
+	</select>
+
+	<select id="selectLastCodeIdByHeader" resultType="string">
+		SELECT TOP 1 CodeID
+		FROM ComBaseData
+		WHERE CodeID LIKE #{header} + '%'
+		ORDER BY CodeID DESC
+	</select>
+
+	<select id="selectMaxCodeId" resultType="string">
+		SELECT TOP 1 CodeID
+		FROM ComBaseData
+		ORDER BY CodeID DESC
+	</select>
+
+	<select id="selectCodeIdsByPCodeId" resultType="string">
+		SELECT RTRIM(CodeID)
+		FROM ComBaseData
+		WHERE RTRIM(PCodeID) = RTRIM(#{pCodeId})
+	</select>
+
+	<insert id="insertTblComBaseData">
+		INSERT INTO ComBaseData (
+			CodeID, CodeName, PCodeID, InsertDate, InsertUserID
+		) VALUES (
+			#{codeId},
+			#{codeName},
+			#{pCodeId},
+			#{insertDate},
+			#{insertUserId}
+		)
+	</insert>
+
+	<update id="updateTblComBaseData">
+		UPDATE ComBaseData
+		SET CodeName = #{codeName},
+		    UpdateDate = #{updateDate},
+		    UpdateUserID = #{updateUserId}
+		WHERE CodeID = #{codeId}
+	</update>
+
+	<delete id="deleteTblComBaseData">
+		DELETE FROM ComBaseData
+		WHERE CodeID = #{codeId}
+	</delete>
+
+</mapper>
