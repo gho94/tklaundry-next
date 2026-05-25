@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tklaundry.api.member.ComMemberMapper">
+<mapper namespace="com.tklaundry.api.common.mapper.ComMemberMapper">
 
-	<resultMap id="comMemberMap" type="com.tklaundry.api.member.ComMember">
+	<resultMap id="comMemberMap" type="com.tklaundry.api.common.model.ComMember">
 		<result property="userId" column="UserID"/>
 		<result property="userPw" column="UserPW"/>
 		<result property="userName" column="UserName"/>
@@ -24,5 +24,52 @@
 		SET LogInDate = #{loginDate}
 		WHERE UserID = #{userId}
 	</update>
+
+	<select id="countByUserId" resultType="int">
+		SELECT COUNT(1)
+		FROM ComMember
+		WHERE UserID = #{userId}
+	</select>
+
+	<insert id="insertTblComMember">
+		INSERT INTO ComMember (
+			UserID, UserPW, UserName, InsertDate, InsertUserID, UseYn
+		) VALUES (
+			#{userId},
+			#{userPw},
+			#{userName},
+			#{insertDate},
+			#{insertUserId},
+			#{useYn}
+		)
+	</insert>
+
+	<update id="updateTblComMemberProfile">
+		UPDATE ComMember
+		SET UserPW = #{userPw},
+		    UserName = #{userName},
+		    UseYn = #{useYn},
+		    UpdateDate = #{updateDate},
+		    UpdateUserID = #{updateUserId}
+		WHERE UserID = #{userId}
+	</update>
+
+	<select id="selectAllTblComMember" resultType="com.tklaundry.api.common.dto.MemberSummary">
+		SELECT UserID AS userId,
+		       UserName AS userName,
+		       LogInDate AS loginDate,
+		       UseYn AS useYn,
+		       InsertDate AS insertDate,
+		       UpdateDate AS updateDate,
+		       InsertUserID AS insertUserId,
+		       UpdateUserID AS updateUserId
+		FROM ComMember
+		ORDER BY UserID
+	</select>
+
+	<delete id="deleteTblComMember">
+		DELETE FROM ComMember
+		WHERE UserID = #{userId}
+	</delete>
 
 </mapper>
