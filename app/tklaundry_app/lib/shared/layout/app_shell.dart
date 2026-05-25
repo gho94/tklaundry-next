@@ -73,8 +73,7 @@ class _Sidebar extends StatelessWidget {
             icon: Icons.settings_outlined,
             label: '설정',
             path: RoutePaths.settings,
-            isActive: currentPath == RoutePaths.settings,
-            enabled: false,
+            isActive: currentPath.startsWith(RoutePaths.settings),
           ),
           const SizedBox(height: AppSpacing.s4),
         ],
@@ -89,27 +88,21 @@ class _NavItem extends StatelessWidget {
     required this.label,
     required this.path,
     required this.isActive,
-    this.enabled = true,
   });
 
   final IconData icon;
   final String label;
   final String path;
   final bool isActive;
-  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
-    final color = !enabled
-        ? AppColors.neutral400
-        : isActive
-            ? AppColors.neutral0
-            : AppColors.neutral400;
+    final color = isActive ? AppColors.neutral0 : AppColors.neutral400;
 
     return Material(
       color: isActive ? AppColors.primary.withValues(alpha: 0.15) : Colors.transparent,
       child: InkWell(
-        onTap: enabled ? () => context.go(path) : null,
+        onTap: () => context.go(path),
         child: Container(
           decoration: isActive
               ? const BoxDecoration(

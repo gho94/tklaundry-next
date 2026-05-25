@@ -4,6 +4,8 @@ import 'package:tklaundry_app/features/auth/data/datasources/auth_remote_data_so
 import 'package:tklaundry_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:tklaundry_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:tklaundry_app/features/auth/domain/usecases/login.dart';
+import 'package:tklaundry_app/features/code/data/datasources/code_remote_data_source.dart';
+import 'package:tklaundry_app/features/member/data/datasources/member_remote_data_source.dart';
 
 final apiClientProvider = Provider<ApiClient>((ref) => ApiClient());
 
@@ -17,4 +19,12 @@ final authRepositoryProvider = Provider<AuthRepository>(
 
 final loginProvider = Provider<Login>(
   (ref) => Login(ref.watch(authRepositoryProvider)),
+);
+
+final codeRemoteDataSourceProvider = Provider<CodeRemoteDataSource>(
+  (ref) => CodeRemoteDataSourceImpl(ref.watch(apiClientProvider)),
+);
+
+final memberRemoteDataSourceProvider = Provider<MemberRemoteDataSource>(
+  (ref) => MemberRemoteDataSourceImpl(ref.watch(apiClientProvider)),
 );
