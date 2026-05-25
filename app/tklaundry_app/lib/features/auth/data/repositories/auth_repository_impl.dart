@@ -26,4 +26,39 @@ class AuthRepositoryImpl implements AuthRepository {
       return (null, const NetworkFailure());
     }
   }
+
+  @override
+  Future<(bool?, Failure?)> isUserIdAvailable(String userId) async {
+    try {
+      final available = await _remote.isUserIdAvailable(userId);
+      return (available, null);
+    } on ApiException catch (e) {
+      return (null, ServerFailure(e.message, traceId: e.traceId));
+    } catch (_) {
+      return (null, const NetworkFailure());
+    }
+  }
+
+  @override
+  Future<(User?, Failure?)> register({
+    required String userId,
+    required String password,
+    required String userName,
+  }) async {
+    try {
+      final model = await _remote.register(
+        userId: userId,
+        password: password,
+        userName: userName,
+      );
+      return (model.toEntity(), null);
+    } on ApiException catch (e) {
+      if (e.statusCode == 409) {
+        return (null, ValidationFailure(e.message));
+      }
+      return (null, ServerFailure(e.message, traceId: e.traceId));
+    } catch (_) {
+      return (null, const NetworkFailure());
+    }
+  }
 }

@@ -6,6 +6,14 @@ abstract class AuthRemoteDataSource {
     required String userId,
     required String password,
   });
+
+  Future<bool> isUserIdAvailable(String userId);
+
+  Future<UserModel> register({
+    required String userId,
+    required String password,
+    required String userName,
+  });
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -21,6 +29,32 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final json = await _client.postJson(
       '/auth/login',
       body: {'userId': userId, 'password': password},
+    );
+    return UserModel.fromJson(json);
+  }
+
+  @override
+  Future<bool> isUserIdAvailable(String userId) async {
+    final value = await _client.getValue(
+      '/auth/check-user-id',
+      queryParameters: {'userId': userId},
+    );
+    return value == true;
+  }
+
+  @override
+  Future<UserModel> register({
+    required String userId,
+    required String password,
+    required String userName,
+  }) async {
+    final json = await _client.postJson(
+      '/auth/register',
+      body: {
+        'userId': userId,
+        'password': password,
+        'userName': userName,
+      },
     );
     return UserModel.fromJson(json);
   }

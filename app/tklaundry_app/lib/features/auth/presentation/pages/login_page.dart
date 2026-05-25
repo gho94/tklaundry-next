@@ -24,7 +24,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   final _passwordController = TextEditingController();
   bool _isLoading = false;
   String? _errorMessage;
-  String? _traceId;
 
   @override
   void dispose() {
@@ -38,17 +37,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     final password = _passwordController.text.trim();
 
     if (userId.isEmpty || password.isEmpty) {
-      setState(() {
-        _errorMessage = '아이디와 비밀번호를 입력해 주세요.';
-        _traceId = null;
-      });
+      setState(() => _errorMessage = '아이디와 비밀번호를 입력해 주세요.');
       return;
     }
 
     setState(() {
       _isLoading = true;
       _errorMessage = null;
-      _traceId = null;
     });
 
     final (user, failure) = await ref.read(loginProvider)(
@@ -62,7 +57,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       setState(() {
         _isLoading = false;
         _errorMessage = failure.message;
-        _traceId = failure.traceId;
       });
       return;
     }
@@ -117,24 +111,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 textInputAction: TextInputAction.done,
                 onSubmitted: (_) => _submit(),
               ),
-              if (_traceId != null) ...[
-                const SizedBox(height: AppSpacing.s2),
-                Text(
-                  'traceId: $_traceId',
-                  style: theme.textTheme.bodySmall,
-                ),
-              ],
               const SizedBox(height: AppSpacing.s6),
               TkButton(
                 label: '로그인',
                 isLoading: _isLoading,
                 onPressed: _submit,
               ),
-              const SizedBox(height: AppSpacing.s4),
-              Text(
-                'v0.1.0 · API localhost:8080',
-                textAlign: TextAlign.center,
-                style: theme.textTheme.bodySmall,
+              const SizedBox(height: AppSpacing.s3),
+              TkButton(
+                label: '회원가입',
+                variant: TkButtonVariant.ghost,
+                onPressed: _isLoading
+                    ? null
+                    : () => context.push(RoutePaths.register),
               ),
             ],
           ),
